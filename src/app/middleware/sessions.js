@@ -22,6 +22,13 @@ const pgSessionStore = new pgStore({
   createTableIfMissing: config.session.createTableIfMissing,
 });
 
+/**
+ * Session middleware
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ * @param {Function} next - The next middleware function
+ * @returns {Response} The response object
+ */
 export const sessionMiddleware = session({
   store: pgSessionStore,
   secret: config.session.secret,
@@ -34,6 +41,13 @@ export const sessionMiddleware = session({
   secure: config.server.isProduction,
 });
 
+/**
+ * Verify session middleware
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ * @param {Function} next - The next middleware function
+ * @returns {Response} The response object
+ */
 export const verifySession = (req, res, next) => {
   if (!req.session?.userId) {
     return res.json(ApiResponse.unauthorized());
@@ -41,3 +55,4 @@ export const verifySession = (req, res, next) => {
   req.userId = req.session.userId;
   next();
 }
+
