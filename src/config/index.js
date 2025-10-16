@@ -97,6 +97,15 @@ class Config {
     };
   }
 
+  // Sentry Configuration
+  get sentry() {
+    return {
+      dsn: this.get('SENTRY_DSN'),
+      enableLogs: this.getBool('SENTRY_ENABLE_LOGS', false),
+      sendDefaultPii: this.getBool('SENTRY_SEND_DEFAULT_PII', false),
+    }
+  }
+
   /**
    * Get all configuration as a plain object
    * @returns {Object} All configuration values
@@ -104,6 +113,7 @@ class Config {
   getAll() {
     return {
       server: this.server,
+      sentry: this.sentry,
     };
   }
 
@@ -124,4 +134,5 @@ export default config;
 // Also export individual configuration sections for convenience
 export const {
   server,
+  sentry,
 } = config;

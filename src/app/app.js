@@ -1,3 +1,7 @@
+import './middleware/instrument.js';
+
+import * as Sentry from "@sentry/node";
+
 import express from 'express';
 
 import healthRoutes from './routes/health.routes.js';
@@ -11,6 +15,9 @@ app.use(express.json());
 
 // Routes
 app.use('/api/health', healthRoutes);
+
+// Sentry error handler
+Sentry.setupExpressErrorHandler(app);
 
 // Error handler
 app.use(errorHandler);
