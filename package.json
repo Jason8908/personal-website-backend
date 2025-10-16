@@ -19,7 +19,7 @@
     "start": "node src/server.js",
     "seed:database": "node src/scripts/seedDatabase.js",
     "start:prod": "npx prisma migrate deploy && node src/server.js",
-    "vercel:build": "npx prisma generate && npx prisma migrate deploy && vercel build"
+    "vercel:build": "npx prisma generate && npx prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "^6.17.1",
