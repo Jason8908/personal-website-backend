@@ -1,0 +1,1 @@
+export const USER_SESSIONS_TABLE = 'user_sessions';

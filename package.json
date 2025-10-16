@@ -1,0 +1,46 @@
+{
+  "name": "personal-website-backend",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Jason8908/personal-website-backend#readme",
+  "bugs": {
+    "url": "https://github.com/Jason8908/personal-website-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jason8908/personal-website-backend.git"
+  },
+  "license": "ISC",
+  "author": "Jason Su",
+  "type": "module",
+  "main": "src/app/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "seed:database": "node src/scripts/seedDatabase.js",
+    "start:prod": "npx prisma migrate deploy && node src/server.js",
+    "vercel:build": "npx prisma generate && npx prisma migrate deploy"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "@prisma/extension-accelerate": "^2.0.2",
+    "@sentry/node": "^10.20.0",
+    "@types/express": "^5.0.3",
+    "bcrypt": "^6.0.0",
+    "connect-pg-simple": "^10.0.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.3",
+    "eslint": "^9.37.0",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "express-validator": "^7.2.1",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.8.0",
+    "prisma": "^6.17.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
