@@ -29,4 +29,35 @@ export class UserService {
 
     return ApiResponse.created(null, 'User created successfully');
   }
+
+  /**
+   * Login a user by checking their credentials against the database.
+   * @param {string} email - The email of the user
+   * @param {string} password - The password of the user
+   * @returns {Promise<ApiResponse>}
+   */
+  async loginUser(email, password) {
+    const user = await this.userRepository.getUserByEmail(email);
+
+    if (!user) {
+      return {
+        response: ApiResponse.unauthorized(null, 'Invalid email or password'),
+        userId: null,
+      }
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.hash);
+
+    if (!isPasswordValid) {
+      return {
+        response: ApiResponse.unauthorized(null, 'Invalid email or password'),
+        userId: null,
+      }
+    }
+
+    return {
+      response: ApiResponse.created(null, 'User logged in successfully'),
+      userId: user.id,
+    }
+  }
 }

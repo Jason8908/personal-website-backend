@@ -131,6 +131,29 @@ class Config {
     }
   }
 
+  // Database configuration
+  get database() {
+    return {
+      connectionString: this.get('DATABASE_URL'),
+      databaseName: this.get('POSTGRES_DB'),
+      databaseUser: this.get('POSTGRES_USER'),
+      databasePassword: this.get('POSTGRES_PASSWORD'),
+    }
+  }
+
+  // Session configuration
+  get session() {
+    return {
+      secret: this.get('SESSION_SECRET'),
+      resave: this.getBool('SESSION_RESAVE', false),
+      saveUninitialized: this.getBool('SESSION_SAVE_UNINITIALIZED', false),
+      cookie: {
+        maxAge: this.getInt('SESSION_COOKIE_MAX_AGE', 86400000), // 1 day
+      },
+      createTableIfMissing: this.getBool('SESSION_CREATE_TABLE_IF_MISSING', true),
+    }
+  }
+
   /**
    * Get all configuration as a plain object
    * @returns {Object} All configuration values
@@ -141,6 +164,8 @@ class Config {
       sentry: this.sentry,
       bcrypt: this.bcrypt,
       initialUser: this.initialUser,
+      database: this.database,
+      session: this.session,
     };
   }
 
@@ -164,4 +189,6 @@ export const {
   sentry,
   bcrypt,
   initialUser,
+  database,
+  session,
 } = config;
