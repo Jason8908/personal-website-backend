@@ -26,6 +26,16 @@ class Config {
     const requiredVars = [
       'NODE_ENV',
       'PORT',
+      'SENTRY_DSN',
+      'SENTRY_ENABLE_LOGS',
+      'SENTRY_SEND_DEFAULT_PII',
+      'DATABASE_URL',
+      'POSTGRES_USER',
+      'POSTGRES_PASSWORD',
+      'POSTGRES_DB',
+      'BCRYPT_SALT_ROUNDS',
+      'INITIAL_USER_EMAIL',
+      'INITIAL_USER_PASSWORD',
     ];
 
     const missingVars = requiredVars.filter(varName => !process.env[varName]);
@@ -106,6 +116,21 @@ class Config {
     }
   }
 
+  // bcrypt configuration
+  get bcrypt() {
+    return {
+      saltRounds: this.getInt('BCRYPT_SALT_ROUNDS', 10),
+    }
+  }
+
+  // Initial user configuration
+  get initialUser() {
+    return {
+      email: this.get('INITIAL_USER_EMAIL'),
+      password: this.get('INITIAL_USER_PASSWORD'),
+    }
+  }
+
   /**
    * Get all configuration as a plain object
    * @returns {Object} All configuration values
@@ -114,6 +139,8 @@ class Config {
     return {
       server: this.server,
       sentry: this.sentry,
+      bcrypt: this.bcrypt,
+      initialUser: this.initialUser,
     };
   }
 
@@ -135,4 +162,6 @@ export default config;
 export const {
   server,
   sentry,
+  bcrypt,
+  initialUser,
 } = config;
