@@ -21,3 +21,13 @@ model users {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model education_history {
+  id String @id @default(uuid())
+  school String
+  degree String
+  field_of_study String
+  start_date DateTime
+  end_date DateTime
+  description String 
+}
