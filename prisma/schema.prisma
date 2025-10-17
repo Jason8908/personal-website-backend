@@ -23,11 +23,63 @@ model users {
 }
 
 model education_history {
-  id String @id @default(uuid())
-  school String
-  degree String
+  id             String   @id @default(uuid())
+  school         String
+  degree         String
   field_of_study String
-  start_date DateTime
-  end_date DateTime
-  description String 
+  start_date     DateTime
+  end_date       DateTime
+  description    String
+}
+
+model skills {
+  id                 String               @id @default(uuid())
+  name               String               @unique
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  experiences_skills experiences_skills[]
+  experiencesId      String?
+}
+
+model bullet_points {
+  id            String   @id @default(uuid())
+  text          String
+  experience_id String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  experience experiences @relation(fields: [experience_id], references: [id])
+}
+
+model experiences_skills {
+  experience_id String
+  skill_id      String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  experience experiences @relation(fields: [experience_id], references: [id])
+  skill      skills      @relation(fields: [skill_id], references: [id])
+
+  @@id([experience_id, skill_id])
+}
+
+model experiences {
+  id                 String               @id @default(uuid())
+  company            String
+  position           String
+  bullet_points      bullet_points[]
+  start_date         DateTime
+  end_date           DateTime?
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  experiences_skills experiences_skills[]
+}
+
+model user_sessions {
+  sid    String   @id(map: "session_pkey") @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
 }
