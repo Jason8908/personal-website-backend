@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { getEntireEducationHistory, createEducationHistory } from '../controllers/education.controller.js';
+import { getEntireEducationHistory, createEducationHistory, updateEducationHistory } from '../controllers/education.controller.js';
 
-import { createEducationHistoryValidation } from '../utils/validations/education/education.validation.js';
+import { createEducationHistoryValidation, updateEducationHistoryValidation } from '../utils/validations/education/education.validation.js';
 import { handleRequestValidations } from '../middleware/requestValidation.js';
+
+import { verifySession } from '../middleware/sessions.js';
 
 const router = Router();
 
@@ -22,6 +24,12 @@ router.get('/', getEntireEducationHistory);
  * @body {Date} startDate - The start date of the education history
  * @body {Date} endDate - The end date of the education history
  */
-router.post('/', createEducationHistoryValidation, handleRequestValidations, createEducationHistory);
+router.post('/', verifySession, createEducationHistoryValidation, handleRequestValidations, createEducationHistory);
+
+/**
+ * @route PATCH /education/:id
+ * @desc  Update a single field (or multiple) of an education history.
+ */
+router.patch('/:id', verifySession, updateEducationHistoryValidation, handleRequestValidations, updateEducationHistory);
 
 export default router;

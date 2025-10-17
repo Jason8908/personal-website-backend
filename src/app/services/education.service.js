@@ -47,4 +47,20 @@ export class EducationService {
 
     return ApiResponse.created(educationHistory.id, 'Education history created successfully');
   }
+
+  /**
+   * Update education history by id
+   * @param {string} id - The id of the education history
+   * @param {Object} fields - Partial fields to update
+   * @returns {Promise<ApiResponse>} ApiResponse with updated education history or not found
+   */
+  async updateEducationHistory(id, fields) {
+    const updated = await this.educationRepository.updateEducationHistory(id, fields);
+
+    if (!updated) {
+      return ApiResponse.notFound(null, 'Education history not found');
+    }
+
+    return ApiResponse.success(updated, 'Education history updated successfully');
+  }
 }
