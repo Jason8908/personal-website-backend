@@ -1,4 +1,4 @@
-import { getProjectService } from '../factories/project.factory.js';
+import { getProjectService } from "../factories/project.factory.js";
 
 const projectService = getProjectService();
 
@@ -19,16 +19,39 @@ export const getAllProjects = async (req, res) => {
  * @param {Response} res - The response object
  */
 export const createProject = async (req, res) => {
-  const {
+  const { name, description, skills, githubUrl, websiteUrl, imageUrl } =
+    req.body;
+
+  const response = await projectService.createProject(
     name,
     description,
     skills,
     githubUrl,
     websiteUrl,
-    imageUrl,
-  } = req.body;
+    imageUrl
+  );
 
-  const response = await projectService.createProject(name, description, skills, githubUrl, websiteUrl, imageUrl);
+  return res.status(response.statusCode).json(response.toJSON());
+};
+
+/**
+ * Update a project
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ */
+export const updateProject = async (req, res) => {
+  const { id } = req.params;
+  const { name, description, skills, githubUrl, websiteUrl, imageUrl } =
+    req.body;
+
+  const response = await projectService.updateProject(id, {
+    name,
+    description,
+    skills,
+    githubUrl,
+    websiteUrl,
+    imageUrl
+  });
 
   return res.status(response.statusCode).json(response.toJSON());
 };
