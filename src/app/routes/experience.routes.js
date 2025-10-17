@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { getAllExperiences, createExperience } from '../controllers/experience.controller.js';
+import { getAllExperiences, createExperience, updateExperience } from '../controllers/experience.controller.js';
 
-import { createExperienceValidation } from '../utils/validations/experiences/experience.validation.js';
+import { createExperienceValidation, updateExperienceValidation } from '../utils/validations/experiences/experience.validation.js';
 import { handleRequestValidations } from '../middleware/requestValidation.js';
 
 import { verifySession } from '../middleware/sessions.js';
@@ -25,5 +25,11 @@ router.get('/', getAllExperiences);
  * @body {Date} endDate - The end date of the experience
  */
 router.post('/', verifySession, createExperienceValidation, handleRequestValidations, createExperience);
+
+/**
+ * @route PATCH /experiences/:id
+ * @desc  Update an experience.
+ */
+router.patch('/:id', verifySession, updateExperienceValidation, handleRequestValidations, updateExperience);
 
 export default router;

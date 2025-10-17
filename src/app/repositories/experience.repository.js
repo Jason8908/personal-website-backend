@@ -13,28 +13,35 @@ export class ExperienceRepository {
    * @param {Date} endDate - The end date of the experience
    * @returns {Promise<Object>} The a promise that resolves to the created Prisma experience object.
    */
-  async createExperience(company, position, bulletPoints, skills, startDate, endDate) {
-    const bulletPointCreateData = bulletPoints.map(bulletPoint => {
+  async createExperience(
+    company,
+    position,
+    bulletPoints,
+    skills,
+    startDate,
+    endDate
+  ) {
+    const bulletPointCreateData = bulletPoints.map((bulletPoint) => {
       return {
-        text: bulletPoint,
-      }
-    })
+        text: bulletPoint
+      };
+    });
 
-    const skillCreateData = skills.map(skill => {
+    const skillCreateData = skills.map((skill) => {
       return {
         skill: {
           connectOrCreate: {
             where: {
-              name: skill,
+              name: skill
             },
             create: {
-              name: skill,
+              name: skill
             }
           }
         }
-      }
+      };
     });
-    
+
     return this.prisma.experiences.create({
       data: {
         company,
@@ -46,17 +53,17 @@ export class ExperienceRepository {
         },
         experiences_skills: {
           create: skillCreateData
-        },
+        }
       },
       include: {
         bullet_points: true,
         experiences_skills: {
           include: {
-            skill: true,
+            skill: true
           }
         }
       }
-    })
+    });
   }
 
   /**
@@ -80,13 +87,89 @@ export class ExperienceRepository {
         bullet_points: true,
         experiences_skills: {
           include: {
-            skill: true,
+            skill: true
           }
         }
       }
     });
 
     return experiences.map(this._mapExperienceToModel);
+  }
+
+  /**
+   * Update an experience by id
+   * Replaces bullet points and skills entirely when provided
+   * @param {string} id - Experience id
+   * @param {Object} fields - Partial fields to update
+   * @returns {Promise<Object|null>} Updated experience model or null if not found
+   */
+  async updateExperience(id, fields) {
+    const existing = await this.prisma.experiences.findUnique({
+      where: { id },
+      include: {
+        bullet_points: true,
+        experiences_skills: true
+      }
+    });
+    if (!existing) return null;
+
+    const updateData = {};
+    if (fields.company !== undefined) updateData.company = fields.company;
+    if (fields.position !== undefined) updateData.position = fields.position;
+    if (fields.startDate !== undefined)
+      updateData.start_date = fields.startDate;
+    if (fields.endDate !== undefined) updateData.end_date = fields.endDate;
+
+    // If the bullet points or skills are provided, replace the existing ones
+    const doReplaceBulletPoints = Array.isArray(fields.bulletPoints);
+    const doReplaceSkills = Array.isArray(fields.skills);
+
+    // Create the bullet points data
+    const bulletPointCreateData = doReplaceBulletPoints
+      ? fields.bulletPoints.map((text) => ({ text }))
+      : undefined;
+
+    // Create the skills data
+    const skillCreateData = doReplaceSkills
+      ? fields.skills.map((skillName) => ({
+          skill: {
+            connectOrCreate: {
+              where: { name: skillName },
+              create: { name: skillName }
+            }
+          }
+        }))
+      : undefined;
+
+    // Update the experience
+    const result = await this.prisma.experiences.update({
+      where: { id },
+      data: {
+        ...updateData,
+        ...(doReplaceBulletPoints
+          ? {
+              bullet_points: {
+                deleteMany: {},
+                create: bulletPointCreateData
+              }
+            }
+          : {}),
+        ...(doReplaceSkills
+          ? {
+              experiences_skills: {
+                deleteMany: {},
+                create: skillCreateData,
+              }
+            }
+          : {})
+      },
+      include: {
+        bullet_points: true,
+        experiences_skills: { include: { skill: true } }
+      }
+    });
+
+    return this._mapExperienceToModel(result);
   }
   /**
    * Map experience to model
@@ -107,10 +190,14 @@ export class ExperienceRepository {
       id: experience.id,
       company: experience.company,
       position: experience.position,
-      bulletPoints: experience.bullet_points.map(bulletPoint => bulletPoint.text),
-      skills: experience.experiences_skills.map(experienceSkill => experienceSkill.skill.name),
+      bulletPoints: experience.bullet_points.map(
+        (bulletPoint) => bulletPoint.text
+      ),
+      skills: experience.experiences_skills.map(
+        (experienceSkill) => experienceSkill.skill.name
+      ),
       startDate: experience.start_date,
-      endDate: experience.end_date,
-    }
+      endDate: experience.end_date
+    };
   }
-} 
+}

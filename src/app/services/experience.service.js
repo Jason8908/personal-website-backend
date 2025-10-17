@@ -45,4 +45,20 @@ export class ExperienceService {
 
     return ApiResponse.created(experience.id, 'Experience created successfully');
   }
+
+  /**
+   * Update an experience by id
+   * @param {string} id - The id of the experience
+   * @param {Object} fields - Partial fields to update
+   * @returns {Promise<ApiResponse>} ApiResponse with updated experience or not found
+   */
+  async updateExperience(id, fields) {
+    const updated = await this.experienceRepository.updateExperience(id, fields);
+
+    if (!updated) {
+      return ApiResponse.notFound(null, 'Experience not found');
+    }
+
+    return ApiResponse.success(updated, 'Experience updated successfully');
+  }
 }
