@@ -34,7 +34,7 @@ model education_history {
 
 model skills {
   id                 String               @id @default(uuid())
-  name               String
+  name               String               @unique
   created_at         DateTime             @default(now())
   updated_at         DateTime             @updatedAt
   experiences_skills experiences_skills[]
@@ -70,8 +70,7 @@ model experiences {
   position           String
   bullet_points      bullet_points[]
   start_date         DateTime
-  end_date           DateTime
-  description        String
+  end_date           DateTime?
   created_at         DateTime             @default(now())
   updated_at         DateTime             @updatedAt
   experiences_skills experiences_skills[]
