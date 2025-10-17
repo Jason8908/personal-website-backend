@@ -9,8 +9,8 @@ const router = Router();
 /**
  * @route POST /users/login
  * @desc  Login a user.
- * @param {Request} req - The request object
- * @param {Response} res - The response object
+ * @body {string} email - The email of the user
+ * @body {string} password - The password of the user
  */
 router.post('/login', loginUserValidation, handleRequestValidations, loginUser);
 
