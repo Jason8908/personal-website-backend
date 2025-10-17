@@ -39,6 +39,7 @@ model skills {
   updated_at         DateTime             @updatedAt
   experiences_skills experiences_skills[]
   experiencesId      String?
+  project_skills     project_skills[]
 }
 
 model bullet_points {
@@ -82,4 +83,31 @@ model user_sessions {
   expire DateTime @db.Timestamp(6)
 
   @@index([expire], map: "IDX_session_expire")
+}
+
+model project_skills {
+  project_id String
+  skill_id   String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  project projects @relation(fields: [project_id], references: [id])
+  skill   skills   @relation(fields: [skill_id], references: [id])
+
+  @@id([project_id, skill_id])
+}
+
+model projects {
+  id          String  @id @default(uuid())
+  name        String
+  description String
+  github_url  String?
+  website_url String?
+  image_url   String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  project_skills project_skills[]
 }
