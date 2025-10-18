@@ -171,6 +171,45 @@ export class ExperienceRepository {
 
     return this._mapExperienceToModel(result);
   }
+
+  /**
+   * Get an experience by id
+   * @param {string} id - The id of the experience
+   * @returns {Promise<Object|null>} The experience model or null if not found
+   * @returns {Object} The experience model with the form:
+   * {
+   *  id: string;
+   *  company: string;
+   *  position: string;
+   *  bulletPoints: Array<string>;
+   *  skills: Array<string>;
+   *  startDate: Date;
+   *  endDate: Date;
+   * }
+   * or null if not found
+   */
+  async getExperienceById(id) {
+    const experience = await this.prisma.experiences.findUnique({
+      where: { id },
+      include: {
+        bullet_points: true,
+        experiences_skills: { include: { skill: true } }
+      }
+    });
+
+    return experience ? this._mapExperienceToModel(experience) : null;
+  }
+
+  /**
+   * Delete an experience by id
+   * @param {string} id - The id of the experience
+   */
+  async deleteExperience(id) {
+    await this.prisma.experiences.delete({
+      where: { id },
+    });
+  }
+  
   /**
    * Map experience to model
    * @param {Object} experience - The experience object

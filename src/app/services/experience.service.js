@@ -31,6 +31,47 @@ export class ExperienceService {
   }
 
   /**
+   * Get an experience by id
+   * @param {string} id - The id of the experience
+   * @returns {Promise<ApiResponse>} An ApiResponse object with the experience data
+   * as an object with the form:
+   * {
+   *  id: string;
+   *  company: string;
+   *  position: string;
+   *  bulletPoints: Array<string>;
+   *  skills: Array<string>;
+   *  startDate: Date;
+   *  endDate: Date;
+   * }
+   */
+  async getExperienceById(id) {
+    const experience = await this.experienceRepository.getExperienceById(id);
+
+    if (!experience) {
+      return ApiResponse.notFound(null, 'Experience not found');
+    }
+
+    return ApiResponse.success(experience, 'Experience fetched successfully');
+  }
+
+  /**
+   * Delete an experience by id
+   * @param {string} id - The id of the experience
+   */
+  async deleteExperience(id) {
+    const experience = await this.experienceRepository.getExperienceById(id);
+
+    if (!experience) {
+      return ApiResponse.notFound(null, 'Experience not found');
+    }
+
+    await this.experienceRepository.deleteExperience(id);
+
+    return ApiResponse.success(null, 'Experience deleted successfully');
+  }
+
+  /**
    * Create a new experience
    * @param {string} company - The company of the experience
    * @param {string} position - The position of the experience

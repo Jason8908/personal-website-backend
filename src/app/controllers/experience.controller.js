@@ -60,3 +60,27 @@ export const updateExperience = async (req, res) => {
 
   return res.status(response.statusCode).json(response.toJSON());
 }
+
+/**
+ * Get an experience by id
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ */
+export const getExperienceById = async (req, res) => {
+  const { id } = req.params;
+  const response = await experienceService.getExperienceById(id);
+
+  return res.status(response.statusCode).json(response.toJSON());
+}
+
+/**
+ * Delete an experience by id
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ */
+export const deleteExperience = async (req, res) => {
+  const { id } = req.params;
+  const response = await experienceService.deleteExperience(id);
+
+  return res.status(response.statusCode).json(response.toJSON());
+}

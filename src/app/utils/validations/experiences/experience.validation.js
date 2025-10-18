@@ -76,3 +76,15 @@ export const updateExperienceValidation = [
     .custom((value) => value.endsWith('Z'))
     .withMessage('End date must be in UTC timezone'),
 ];
+
+export const getExperienceByIdValidation = [
+  param('id')
+    .isUUID()
+    .withMessage('Invalid id'),
+];
+
+export const deleteExperienceValidation = [
+  param('id')
+    .isUUID()
+    .withMessage('Invalid id'),
+];
