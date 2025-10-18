@@ -11,9 +11,9 @@ export class ProjectRepository {
    *    id: string;
    *    name: string;
    *    description: string;
-   *    github_url: string | null;
-   *    website_url: string | null;
-   *    image_url: string | null;
+   *    githubUrl: string | null;
+   *    websiteUrl: string | null;
+   *    imageUrl: string | null;
    *    skills: Array<string>;
    *  }
    * ]
@@ -37,9 +37,9 @@ export class ProjectRepository {
    * @param {string} name - The name of the project
    * @param {string} description - The description of the project
    * @param {Array<string>} skills - The skills of the project
-   * @param {string} github_url - The GitHub URL of the project
-   * @param {string} website_url - The website URL of the project
-   * @param {string} image_url - The image URL of the project
+   * @param {string} githubUrl - The GitHub URL of the project
+   * @param {string} websiteUrl - The website URL of the project
+   * @param {string} imageUrl - The image URL of the project
    * @returns {Promise<Object>} - A promise that resolves to the created Prisma project object.
    */
   async createProject(
@@ -139,6 +139,29 @@ export class ProjectRepository {
   }
 
   /**
+   * Gets a project by id
+   * @param {string} id - The id of the project
+   * @returns {Promise<Object>} The project object with the form:
+   * {
+   *  id: string;
+   *  name: string;
+   *  description: string;
+   *  githubUrl: string | null;
+   *  websiteUrl: string | null;
+   *  imageUrl: string | null;
+   *  skills: Array<string>;
+   * }
+   */
+  async getProjectById(id) {
+    const project = await this.prisma.projects.findUnique({
+      where: { id },
+      include: { project_skills: true }
+    });
+
+    return project ? this._mapProjectToModel(project) : null;
+  }
+
+  /**
    * Delete a project by id
    * @param {string} id - The id of the project
    * @returns {Promise<void>} A promise that resolves when the project is deleted
@@ -162,9 +185,9 @@ export class ProjectRepository {
    *  id: string;
    *  name: string;
    *  description: string;
-   *  github_url: string | null;
-   *  website_url: string | null;
-   *  image_url: string | null;
+   *  githubUrl: string | null;
+   *  websiteUrl: string | null;
+   *  imageUrl: string | null;
    *  skills: Array<string>;
    * }
    */
@@ -173,12 +196,10 @@ export class ProjectRepository {
       id: project.id,
       name: project.name,
       description: project.description,
-      github_url: project.github_url,
-      website_url: project.website_url,
-      image_url: project.image_url,
-      skills: project.project_skills.map(
-        (projectSkill) => projectSkill.skill.name
-      )
+      githubUrl: project.github_url,
+      websiteUrl: project.website_url,
+      imageUrl: project.image_url,
+      skills: project.project_skills.map((projectSkill) => projectSkill.skill.name)
     };
   }
 }

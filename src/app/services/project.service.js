@@ -17,9 +17,9 @@ export class ProjectService {
    *    id: string;
    *    name: string;
    *    description: string;
-   *    github_url: string | null;
-   *    website_url: string | null;
-   *    image_url: string | null;
+   *    githubUrl: string | null;
+   *    websiteUrl: string | null;
+   *    imageUrl: string | null;
    *    skills: Array<string>;
    *  }
    * ]
