@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { getEntireEducationHistory, createEducationHistory, updateEducationHistory } from '../controllers/education.controller.js';
+import { getEntireEducationHistory, createEducationHistory, updateEducationHistory, deleteEducationHistory } from '../controllers/education.controller.js';
 
-import { createEducationHistoryValidation, updateEducationHistoryValidation } from '../utils/validations/education/education.validation.js';
+import { createEducationHistoryValidation, updateEducationHistoryValidation, deleteEducationHistoryValidation } from '../utils/validations/education/education.validation.js';
 import { handleRequestValidations } from '../middleware/requestValidation.js';
 
 import { verifySession } from '../middleware/sessions.js';
@@ -31,5 +31,12 @@ router.post('/', verifySession, createEducationHistoryValidation, handleRequestV
  * @desc  Update a single field (or multiple) of an education history.
  */
 router.patch('/:id', verifySession, updateEducationHistoryValidation, handleRequestValidations, updateEducationHistory);
+
+/**
+ * @route DELETE /education/:id
+ * @desc  Delete an education history.
+ * @param {string} id - The id of the education history
+ */
+router.delete('/:id', verifySession, deleteEducationHistoryValidation, handleRequestValidations, deleteEducationHistory);
 
 export default router;

@@ -88,6 +88,20 @@ export class EducationRepository {
   }
 
   /**
+   * Delete education history by id
+   * @param {string} id - The id of the education history
+   * @returns {Promise<void>} A promise that resolves when the education history is deleted
+   */
+  async deleteEducationHistory(id) {
+    const educationHistory = await this.prisma.education_history.findUnique({
+      where: { id },
+    });
+    if (!educationHistory) return;
+
+    await this.prisma.education_history.delete({ where: { id } });
+  }
+
+  /**
    * Map education history to model
    * @param {Object} educationHistory - The education history object
    * @returns {Object} The education history model with the form:

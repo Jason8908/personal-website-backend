@@ -63,4 +63,46 @@ export class EducationService {
 
     return ApiResponse.success(updated, 'Education history updated successfully');
   }
+
+  /**
+   * Delete education history by id
+   * @param {string} id - The id of the education history
+   * @returns {Promise<ApiResponse>}
+   */
+  async deleteEducationHistory(id) {
+    const educationHistory = await this.educationRepository.getEducationHistoryById(id);
+
+    if (!educationHistory) {
+      return ApiResponse.notFound(null, 'Education history not found');
+    }
+
+    await this.educationRepository.deleteEducationHistory(id);
+
+    return ApiResponse.success(null, 'Education history deleted successfully');
+  }
+
+  /**
+   * Get education history by id
+   * @param {string} id - The id of the education history
+   * @returns {Promise<ApiResponse>} ApiResponse with education history or not found
+   * as an object with the form:
+   * {
+   *  id: string;
+   *  school: string;
+   *  degree: string;
+   *  fieldOfStudy: string;
+   *  description: string;
+   *  startDate: Date;
+   *  endDate: Date;
+   * }
+   */
+  async getEducationHistoryById(id) {
+    const educationHistory = await this.educationRepository.getEducationHistoryById(id);
+
+    if (!educationHistory) {
+      return ApiResponse.notFound(null, 'Education history not found');
+    }
+
+    return ApiResponse.success(educationHistory, 'Education history fetched successfully');
+  }
 }

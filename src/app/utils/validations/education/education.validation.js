@@ -77,3 +77,9 @@ export const updateEducationHistoryValidation = [
     .custom((value) => value.endsWith('Z'))
     .withMessage('End date must be in UTC timezone'),
 ];
+
+export const deleteEducationHistoryValidation = [
+  param('id')
+    .isUUID()
+    .withMessage('Invalid id'),
+];

@@ -46,3 +46,16 @@ export const updateEducationHistory = async (req, res) => {
 
   return res.status(response.statusCode).json(response.toJSON());
 }
+
+/**
+ * Delete education history by id
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ */
+export const deleteEducationHistory = async (req, res) => {
+  const { id } = req.params;
+
+  const response = await educationService.deleteEducationHistory(id);
+
+  return res.status(response.statusCode).json(response.toJSON());
+}
