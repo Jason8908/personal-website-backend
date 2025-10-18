@@ -155,7 +155,11 @@ export class ProjectRepository {
   async getProjectById(id) {
     const project = await this.prisma.projects.findUnique({
       where: { id },
-      include: { project_skills: true }
+      include: {
+        project_skills: {
+          include: { skill: true }
+        }
+      }
     });
 
     return project ? this._mapProjectToModel(project) : null;
@@ -199,7 +203,9 @@ export class ProjectRepository {
       githubUrl: project.github_url,
       websiteUrl: project.website_url,
       imageUrl: project.image_url,
-      skills: project.project_skills.map((projectSkill) => projectSkill.skill.name)
+      skills: project.project_skills.map(
+        (projectSkill) => projectSkill.skill.name
+      )
     };
   }
 }
