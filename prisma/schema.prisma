@@ -48,7 +48,7 @@ model bullet_points {
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 
-  experience experiences @relation(fields: [experience_id], references: [id])
+  experience experiences @relation(fields: [experience_id], references: [id], onDelete: Cascade)
 }
 
 model experiences_skills {
@@ -58,8 +58,8 @@ model experiences_skills {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  experience experiences @relation(fields: [experience_id], references: [id])
-  skill      skills      @relation(fields: [skill_id], references: [id])
+  experience experiences @relation(fields: [experience_id], references: [id], onDelete: Cascade)
+  skill      skills      @relation(fields: [skill_id], references: [id], onDelete: Cascade)
 
   @@id([experience_id, skill_id])
 }
@@ -91,8 +91,8 @@ model project_skills {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  project projects @relation(fields: [project_id], references: [id])
-  skill   skills   @relation(fields: [skill_id], references: [id])
+  project projects @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  skill   skills   @relation(fields: [skill_id], references: [id], onDelete: Cascade)
 
   @@id([project_id, skill_id])
 }
