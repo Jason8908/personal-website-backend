@@ -60,4 +60,29 @@ export class UserService {
       userId: user.id,
     }
   }
+
+  /**
+   * Get the user's information
+   * @param {string} userId - The id of the user
+   * @returns {Promise<ApiResponse>} An APIResponse object with the user's information
+   * as an object with the form:
+   * {
+   *  id: string;
+   *  email: string;
+   * }
+   */
+  async me(userId) {
+    const user = await this.userRepository.getUserById(userId);
+
+    if (!user) {
+      return ApiResponse.notFound(null, 'User not found');
+    }
+
+    const response = {
+      id: user.id,
+      email: user.email,
+    }
+
+    return ApiResponse.success(response);
+  }
 }

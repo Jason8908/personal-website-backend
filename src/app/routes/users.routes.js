@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { loginUser } from '../controllers/users.controller.js';
+import { loginUser, me } from '../controllers/users.controller.js';
 
 import { loginUserValidation } from '../utils/validations/users/user.validations.js';
 import { handleRequestValidations } from '../middleware/requestValidation.js';
+import { verifySession } from '../middleware/sessions.js';
 
 const router = Router();
 
@@ -13,5 +14,11 @@ const router = Router();
  * @body {string} password - The password of the user
  */
 router.post('/login', loginUserValidation, handleRequestValidations, loginUser);
+
+/**
+ * @route GET /users/me
+ * @desc  Get the currently logged in user's information.
+ */
+router.get('/me', verifySession, me);
 
 export default router;
