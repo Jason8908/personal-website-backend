@@ -13,6 +13,8 @@ import projectRoutes from './routes/project.routes.js';
 import { errorHandler } from './middleware/errors.js';
 import { sessionMiddleware } from './middleware/sessions.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import config from '../config/index.js';
 
 const app = express();
 
@@ -20,6 +22,17 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(sessionMiddleware);
+
+// CORS
+const corsOptions = {
+  origin: config.cors.origins,
+  methods: config.cors.methods,
+  allowedHeaders: config.cors.allowedHeaders,
+  exposedHeaders: config.cors.exposedHeaders,
+  credentials: config.cors.credentials,
+  maxAge: config.cors.maxAge,
+};
+app.use(cors(corsOptions));
 
 
 // Routes

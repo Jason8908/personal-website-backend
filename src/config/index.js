@@ -154,6 +154,18 @@ class Config {
     }
   }
 
+  // CORS configuration
+  get cors() {
+    return {
+      origins: this.getArray('CORS_ORIGINS', []),
+      methods: this.getArray('CORS_METHODS', ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']),
+      allowedHeaders: this.getArray('CORS_ALLOWED_HEADERS', ['Content-Type', 'Authorization']),
+      exposedHeaders: this.getArray('CORS_EXPOSED_HEADERS', []),
+      credentials: this.getBool('CORS_CREDENTIALS', true),
+      maxAge: this.getInt('CORS_MAX_AGE', 600),
+    }
+  }
+
   /**
    * Get all configuration as a plain object
    * @returns {Object} All configuration values
@@ -166,6 +178,7 @@ class Config {
       initialUser: this.initialUser,
       database: this.database,
       session: this.session,
+      cors: this.cors,
     };
   }
 
@@ -191,4 +204,5 @@ export const {
   initialUser,
   database,
   session,
+  cors,
 } = config;
