@@ -38,7 +38,6 @@ model skills {
   created_at         DateTime             @default(now())
   updated_at         DateTime             @updatedAt
   experiences_skills experiences_skills[]
-  experiencesId      String?
   project_skills     project_skills[]
 }
 
