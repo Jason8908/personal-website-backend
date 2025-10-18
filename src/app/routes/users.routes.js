@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { loginUser, me } from '../controllers/users.controller.js';
+import { loginUser, me, logoutUser } from '../controllers/users.controller.js';
 
 import { loginUserValidation } from '../utils/validations/users/user.validations.js';
 import { handleRequestValidations } from '../middleware/requestValidation.js';
@@ -20,5 +20,11 @@ router.post('/login', loginUserValidation, handleRequestValidations, loginUser);
  * @desc  Get the currently logged in user's information.
  */
 router.get('/me', verifySession, me);
+
+/**
+ * @route DELETE /users/logout
+ * @desc  Logout the current user by destroying the session (idempotent).
+ */
+router.delete('/logout', logoutUser);
 
 export default router;
