@@ -56,3 +56,9 @@ export const updateProjectValidation = [
     .isURL()
     .withMessage("Image URL must be a valid URL")
 ];
+
+export const deleteProjectValidation = [
+  param("id")
+    .isUUID()
+    .withMessage("Invalid id")
+];

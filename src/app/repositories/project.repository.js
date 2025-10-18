@@ -139,6 +139,22 @@ export class ProjectRepository {
   }
 
   /**
+   * Delete a project by id
+   * @param {string} id - The id of the project
+   * @returns {Promise<void>} A promise that resolves when the project is deleted
+   */
+  async deleteProject(id) {
+    const project = await this.prisma.projects.findUnique({
+      where: { id },
+      include: { project_skills: true }
+    });
+
+    if (!project) return;
+
+    await this.prisma.projects.delete({ where: { id } });
+  }
+
+  /**
    * Map project to model
    * @param {Object} project - The project object
    * @returns {Object} The project model with the form:

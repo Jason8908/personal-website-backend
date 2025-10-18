@@ -2,12 +2,14 @@ import { Router } from "express";
 import {
   getAllProjects,
   createProject,
-  updateProject
+  updateProject,
+  deleteProject
 } from "../controllers/project.controller.js";
 
 import {
   createProjectValidation,
-  updateProjectValidation
+  updateProjectValidation,
+  deleteProjectValidation,
 } from "../utils/validations/projects/project.validation.js";
 import { handleRequestValidations } from "../middleware/requestValidation.js";
 
@@ -49,6 +51,19 @@ router.patch(
   updateProjectValidation,
   handleRequestValidations,
   updateProject
+);
+
+/**
+ * @route DELETE /projects/:id
+ * @desc  Delete a project.
+ * @param {string} id - The id of the project
+ */
+router.delete(
+  "/:id",
+  verifySession,
+  deleteProjectValidation,
+  handleRequestValidations,
+  deleteProject
 );
 
 export default router;

@@ -55,3 +55,15 @@ export const updateProject = async (req, res) => {
 
   return res.status(response.statusCode).json(response.toJSON());
 };
+
+/**
+ * Delete a project
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ */
+export const deleteProject = async (req, res) => {
+  const { id } = req.params;
+  const response = await projectService.deleteProject(id);
+
+  return res.status(response.statusCode).json(response.toJSON());
+};

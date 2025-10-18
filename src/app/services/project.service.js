@@ -75,4 +75,22 @@ export class ProjectService {
 
     return ApiResponse.success(updated, "Project updated successfully");
   }
+
+  /**
+   * Delete a project by id
+   * @param {string} id - The id of the project
+   * @returns {Promise<ApiResponse>} ApiResponse with deleted project or not found
+   * @returns {ApiResponse} ApiResponse with success message
+   */
+  async deleteProject(id) {
+    const project = await this.projectRepository.getProjectById(id);
+
+    if (!project) {
+      return ApiResponse.notFound(null, "Project not found");
+    }
+
+    await this.projectRepository.deleteProject(id);
+
+    return ApiResponse.success(null, "Project deleted successfully");
+  }
 }
