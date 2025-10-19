@@ -50,7 +50,8 @@ export const sessionMiddleware = session({
  */
 export const verifySession = (req, res, next) => {
   if (!req.session?.userId) {
-    return res.json(ApiResponse.unauthorized());
+    const response = ApiResponse.unauthorized();
+    return res.status(response.statusCode).json(response.toJSON());
   }
   req.userId = req.session.userId;
   next();
