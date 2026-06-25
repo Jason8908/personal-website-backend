@@ -40,8 +40,16 @@
   },
   "devDependencies": {
     "@types/node": "^24.8.0",
-    "prisma": "^6.17.1",
+    "prisma": "^6.19.3",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
+  },
+  "allowScripts": {
+    "@prisma/client@6.17.1": true,
+    "bcrypt@6.0.0": true,
+    "esbuild@0.25.11": true,
+    "fsevents@2.3.3": true,
+    "@prisma/engines@6.19.3": true,
+    "prisma@6.19.3": true
   }
 }
